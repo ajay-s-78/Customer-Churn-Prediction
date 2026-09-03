@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Prediction — ChurnShield</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link
+        href="{{ url_for('static', filename='css/theme.css') }}"
+        rel="stylesheet">
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+     ========================================================= -->
+
+<nav class="navbar navbar-expand-lg navbar-glass fixed-top">
+
+    <div class="container">
+
+        <a class="nav-link" href="/predict">
+
+            Prediction
+
+            <span class="brand-dot">
+                <i class="bi bi-shield-shaded"></i>
+            </span>
+
+            <span>ChurnShield</span>
+
+        </a>
+
+
+        <button
+            class="navbar-toggler border-0"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#nav">
+
+            <i class="bi bi-list fs-2 text-white"></i>
+
+        </button>
+
+
+        <div
+            class="collapse navbar-collapse"
+            id="nav">
+
+            <ul
+                class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/">
+                        Home
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard">
+                        Dashboard
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/predict">
+                        Prediction
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/analytics">
+                        Analytics
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">
+                        About
+                    </a>
+                </li>
+
+
+                <li class="nav-item ms-lg-2">
+
+                    <a
+                        class="btn btn-grad"
+                        href="/predict">
+
+                        <i class="bi bi-stars me-1"></i>
+
+                        Run Prediction
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================================================
+     MAIN
+     ========================================================= -->
+
+<main class="page-pad">
+
+    <div class="container">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="text-center mb-4 reveal">
+
+            <span class="badge-glass">
+
+                <i class="bi bi-stars me-1"></i>
+
+                Single Customer Inference
+
+            </span>
+
+
+            <h1 class="text-white mt-2 mb-1">
+
+                Churn Prediction
+
+            </h1>
+
+
+            <p
+                class="text-white-50"
+                style="color:rgba(255,255,255,.7)!important">
+
+                Enter customer details to get a churn probability,
+                risk tier, and recommended action.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             FORM + RESULT
+             SAME HEIGHT
+             ===================================================== -->
+
+        <div class="row g-4 align-items-stretch">
+
+
+            <!-- =================================================
+                 LEFT — PREDICTION FORM
+                 ================================================= -->
+
+            <div class="col-12 col-lg-7 reveal d-flex">
+
+                <div class="form-card p-4 p-md-4 h-100 w-100">
+
+
+                    <form
+                        id="predictForm"
+                        method="POST"
+                        action="/predict">
+
+
+                        <!-- ===============================
+                             CUSTOMER PROFILE
+                             =============================== -->
+
+                        <div class="form-section-title">
+
+                            <span class="num">1</span>
+
+                            Customer Profile
+
+                        </div>
+
+
+                        <div class="row g-3">
+
+
+                            <!-- Gender -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Gender
+                                </label>
+
+
+                                <select
+                                    class="form-select"
+                                    name="gender"
+                                    required>
+
+                                    <option value="Female">
+                                        Female
+                                    </option>
+
+                                    <option value="Male">
+                                        Male
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Senior Citizen -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Senior Citizen
+                                </label>
+
+
+                                <select
+                                    class="form-select"
+                                    name="senior"
+                                    required>
+
+                                    <option value="no">
+                                        No
+                                    </option>
+
+                                    <option value="yes">
+                                        Yes
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Partner -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Partner
+                                </label>
+
+
+                                <select
+                                    class="form-select"
+                                    name="partner"
+                                    required>
+
+                                    <option value="no">
+                                        No
+                                    </option>
+
+                                    <option value="yes">
+                                        Yes
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Dependents -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Dependents
+                                </label>
+
+
+                                <select
+                                    class="form-select"
+                                    name="dependents"
+                                    required>
+
+                                    <option value="no">
+                                        No
+                                    </option>
+
+                                    <option value="yes">
+                                        Yes
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="divider-soft my-4"></div>
+
+
+
+                        <!-- ===============================
+                             ACCOUNT & BILLING
+                             =============================== -->
+
+                        <div class="form-section-title">
+
+                            <span class="num">2</span>
+
+                            Account &amp; Billing
+
+                        </div>
+
+
+                        <div class="row g-3">
+
+
+                            <!-- Tenure -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Tenure (months)
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="tenure"
+                                    min="0"
+                                    max="72"
+                                    value="12"
+                                    required>
+
+                            </div>
+
+
+                            <!-- Contract -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Contract Type
+                                </label>
+
+
+                                <select
+                                    class="form-select"
+                                    name="contract"
+                                    required>
+
+                                    <option value="month">
+                                        Month-to-month
+                                    </option>
+
+                                    <option value="one">
+                                        One year
+                                    </option>
+
+                                    <option value="two">
+                                        Two year
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Monthly Charges -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Monthly Charges ($)
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="monthly"
+                                    min="0"
+                                    step="0.01"
+                                    value="65.5"
+                                    required>
+
+                            </div>
+
+
+                            <!-- Total Charges -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Total Charges ($)
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="total"
+                                    min="0"
+                                    step="0.01"
+                                    value="780.0"
+                                    required>
+
+                            </div>
+
+
+                            <!-- Payment -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Payment Method
+                                </label>
+
+
+                                <select
+                                    class="form-select"
+                                    name="payment"
+                                    required>
+
+                                    <option value="electronic">
+                                        Electronic check
+                                    </option>
+
+                                    <option value="mailed">
+                                        Mailed check
+                                    </option>
+
+                                    <option value="auto_card">
+                                        Credit card (auto)
+                                    </option>
+
+                                    <option value="auto_bank">
+                                        Bank transfer (auto)
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Paperless -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Paperless Billing
+                                </label>
+
+
+                                <select
+                                    class="form-select"
+                                    name="paperless"
+                                    required>
+
+                                    <option value="yes">
+                                        Yes
+                                    </option>
+
+                                    <option value="no">
+                                        No
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="divider-soft my-4"></div>
+
+
+
+                        <!-- ===============================
+                             SERVICES
+                             =============================== -->
+
+                        <div class="form-section-title">
+
+                            <span class="num">3</span>
+
+                            Services Subscribed
+
+                        </div>
+
+
+                        <div class="row g-3">
+
+
+                            <!-- Internet Service -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Internet Service
+                                </label>
+
+
+                                <select
+                                    class="form-select"
+                                    name="internet"
+                                    required>
+
+                                    <option value="fiber">
+                                        Fiber optic
+                                    </option>
+
+                                    <option value="dsl">
+                                        DSL
+                                    </option>
+
+                                    <option value="none">
+                                        No internet
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Online Security -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Online Security
+                                </label>
+
+
+                                <select
+                                    class="form-select"
+                                    name="onlinesecurity"
+                                    required>
+
+                                    <option value="no">
+                                        No
+                                    </option>
+
+                                    <option value="yes">
+                                        Yes
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Tech Support -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Tech Support
+                                </label>
+
+
+                                <select
+                                    class="form-select"
+                                    name="support"
+                                    required>
+
+                                    <option value="no">
+                                        No
+                                    </option>
+
+                                    <option value="yes">
+                                        Yes
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Streaming TV -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Streaming TV
+                                </label>
+
+
+                                <select
+                                    class="form-select"
+                                    name="streamingtv"
+                                    required>
+
+                                    <option value="no">
+                                        No
+                                    </option>
+
+                                    <option value="yes">
+                                        Yes
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- PREDICT BUTTON -->
+
+                        <div class="d-grid mt-4">
+
+                            <button
+                                type="submit"
+                                class="btn btn-grad btn-lg">
+
+                                <i class="bi bi-stars me-2"></i>
+
+                                Predict Churn Risk
+
+                            </button>
+
+                        </div>
+
+
+                        <p
+                            class="text-muted small mt-2 mb-0 text-center">
+
+                            Enter the customer details and run
+                            the Flask prediction.
+
+                        </p>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 RIGHT — RESULT
+                 ================================================= -->
+
+            <div class="col-12 col-lg-5 reveal d-flex">
+
+
+                {% if result and result.success %}
+
+
+                <!-- ===============================
+                     PREDICTION RESULT CARD
+                     =============================== -->
+
+                <div
+                    id="resultCard"
+                    class="glass p-4 h-100 w-100 d-flex flex-column"
+                    style="
+                        background:
+                            linear-gradient(
+                                145deg,
+                                rgba(79,70,229,.92),
+                                rgba(124,58,237,.96)
+                            );
+
+                        border:
+                            1px solid
+                            rgba(255,255,255,.22);
+
+                        border-radius:24px;
+
+                        box-shadow:
+                            0 25px 60px
+                            rgba(0,0,0,.25);
+
+                        color:white;
+                    ">
+
+
+                    <!-- HEADER -->
+
+                    <div class="text-center">
+
+                        <div
+                            style="
+                                width:64px;
+                                height:64px;
+                                margin:0 auto 14px;
+                                border-radius:18px;
+
+                                background:
+                                    linear-gradient(
+                                        135deg,
+                                        #7c3aed,
+                                        #9333ea
+                                    );
+
+                                display:grid;
+                                place-items:center;
+
+                                color:white;
+
+                                font-size:1.8rem;
+
+                                box-shadow:
+                                    0 12px 28px
+                                    rgba(0,0,0,.28);
+                            ">
+
+                            <i class="bi bi-shield-shaded"></i>
+
+                        </div>
+
+
+                        <h3 class="fw-bold mb-1">
+
+                            Prediction Result
+
+                        </h3>
+
+
+                        <p
+                            style="
+                                color:
+                                    rgba(255,255,255,.72);
+                                margin-bottom:20px;
+                            ">
+
+                            AI-powered customer churn prediction
+
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- PROBABILITY -->
+
+                    <div class="text-center my-2">
+
+                        <div
+                            style="
+                                font-size:3.2rem;
+                                font-weight:800;
+                                line-height:1.1;
+                            ">
+
+                            {{ result.confidence }}%
+
+                        </div>
+
+
+                        <div
+                            style="
+                                color:
+                                    rgba(255,255,255,.72);
+
+                                font-size:.78rem;
+
+                                font-weight:700;
+
+                                letter-spacing:1px;
+
+                                text-transform:uppercase;
+                            ">
+
+                            Churn Probability
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- RISK BADGE -->
+
+                    <div class="text-center my-4">
+
+
+                        {% if result.risk == "High" %}
+
+                        <span
+                            class="risk-badge risk-high"
+                            style="
+                                display:inline-flex;
+                                align-items:center;
+                                gap:8px;
+
+                                padding:10px 22px;
+
+                                border-radius:30px;
+
+                                font-weight:700;
+                            ">
+
+                            <i
+                                class="bi bi-shield-exclamation">
+                            </i>
+
+                            High Risk
+
+                        </span>
+
+
+                        {% elif result.risk == "Medium" %}
+
+                        <span
+                            class="risk-badge risk-medium"
+                            style="
+                                display:inline-flex;
+                                align-items:center;
+                                gap:8px;
+
+                                padding:10px 22px;
+
+                                border-radius:30px;
+
+                                font-weight:700;
+                            ">
+
+                            <i
+                                class="bi bi-shield-exclamation">
+                            </i>
+
+                            Medium Risk
+
+                        </span>
+
+
+                        {% else %}
+
+                        <span
+                            class="risk-badge risk-low"
+                            style="
+                                display:inline-flex;
+                                align-items:center;
+                                gap:8px;
+
+                                padding:10px 22px;
+
+                                border-radius:30px;
+
+                                font-weight:700;
+                            ">
+
+                            <i class="bi bi-shield-check"></i>
+
+                            Low Risk
+
+                        </span>
+
+                        {% endif %}
+
+
+                    </div>
+
+
+
+                    <!-- STATISTICS -->
+
+                    <div class="row g-2 text-center">
+
+
+                        <!-- OUTCOME -->
+
+                        <div class="col-4">
+
+                            <div
+                                style="
+                                    background:
+                                        rgba(255,255,255,.13);
+
+                                    border:
+                                        1px solid
+                                        rgba(255,255,255,.16);
+
+                                    border-radius:15px;
+
+                                    padding:15px 4px;
+                                ">
+
+
+                                <div
+                                    style="
+                                        color:white;
+                                        font-size:1rem;
+                                        font-weight:800;
+                                    ">
+
+                                    {% if result.prediction == "Yes" %}
+
+                                        CHURN
+
+                                    {% else %}
+
+                                        RETAIN
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <small
+                                    style="
+                                        color:
+                                            rgba(255,255,255,.68);
+                                    ">
+
+                                    Outcome
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- CONFIDENCE -->
+
+                        <div class="col-4">
+
+                            <div
+                                style="
+                                    background:
+                                        rgba(255,255,255,.13);
+
+                                    border:
+                                        1px solid
+                                        rgba(255,255,255,.16);
+
+                                    border-radius:15px;
+
+                                    padding:15px 4px;
+                                ">
+
+
+                                <div
+                                    style="
+                                        color:white;
+                                        font-size:1rem;
+                                        font-weight:800;
+                                    ">
+
+                                    {{ result.confidence }}%
+
+                                </div>
+
+
+                                <small
+                                    style="
+                                        color:
+                                            rgba(255,255,255,.68);
+                                    ">
+
+                                    Confidence
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- RISK -->
+
+                        <div class="col-4">
+
+                            <div
+                                style="
+                                    background:
+                                        rgba(255,255,255,.13);
+
+                                    border:
+                                        1px solid
+                                        rgba(255,255,255,.16);
+
+                                    border-radius:15px;
+
+                                    padding:15px 4px;
+                                ">
+
+
+                                <div
+                                    style="
+                                        color:white;
+                                        font-size:1rem;
+                                        font-weight:800;
+                                    ">
+
+                                    {{ result.risk }}
+
+                                </div>
+
+
+                                <small
+                                    style="
+                                        color:
+                                            rgba(255,255,255,.68);
+                                    ">
+
+                                    Risk Tier
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- RECOMMENDATION -->
+
+                    <div
+                        style="
+                            border-top:
+                                1px solid
+                                rgba(255,255,255,.20);
+
+                            margin-top:20px;
+
+                            padding-top:18px;
+                        ">
+
+
+                        <h6
+                            class="fw-bold mb-2">
+
+                            <i
+                                class="bi bi-lightbulb"
+                                style="color:#fbbf24;">
+                            </i>
+
+                            Recommendation
+
+                        </h6>
+
+
+                        <p
+                            style="
+                                color:
+                                    rgba(255,255,255,.84);
+
+                                line-height:1.6;
+
+                                font-size:.92rem;
+
+                                margin-bottom:0;
+                            ">
+
+                            {{ result.recommendation }}
+
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                {% else %}
+
+
+                <!-- ===============================
+                     AWAITING INPUT
+                     =============================== -->
+
+                <div
+                    id="placeholderCard"
+                    class="glass p-4 h-100 w-100 d-flex align-items-center justify-content-center"
+                    style="
+                        min-height:100%;
+
+                        background:
+                            linear-gradient(
+                                145deg,
+                                rgba(79,70,229,.82),
+                                rgba(124,58,237,.94)
+                            );
+
+                        border:
+                            1px solid
+                            rgba(255,255,255,.20);
+
+                        border-radius:24px;
+
+                        color:white;
+
+                        text-align:center;
+                    ">
+
+
+                    <div>
+
+
+                        <div
+                            style="
+                                width:64px;
+                                height:64px;
+                                margin:0 auto 16px;
+
+                                border-radius:18px;
+
+                                background:
+                                    linear-gradient(
+                                        135deg,
+                                        #7c3aed,
+                                        #9333ea
+                                    );
+
+                                display:grid;
+                                place-items:center;
+
+                                color:white;
+
+                                font-size:1.8rem;
+
+                                box-shadow:
+                                    0 12px 28px
+                                    rgba(0,0,0,.28);
+                            ">
+
+                            <i class="bi bi-shield-shaded"></i>
+
+                        </div>
+
+
+                        <h5 class="fw-bold text-white">
+
+                            Awaiting input
+
+                        </h5>
+
+
+                        <p
+                            style="
+                                color:
+                                    rgba(255,255,255,.72);
+
+                                line-height:1.6;
+
+                                margin-bottom:0;
+                            ">
+
+                            Fill in the customer details
+                            and click
+                            <strong>
+                                Predict Churn Risk
+                            </strong>
+                            to see the prediction result here.
+
+                        </p>
+
+
+                    </div>
+
+                </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</main>
+
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer class="footer-glass py-4">
+
+    <div
+        class="
+            container
+            d-flex
+            flex-column
+            flex-md-row
+            justify-content-between
+            align-items-center
+            gap-2
+        ">
+
+
+        <span class="small">
+
+            © 2026 ChurnShield ·
+            AI Customer Churn Prediction
+
+        </span>
+
+
+        <span class="small">
+
+            Built with Bootstrap 5 ·
+            Chart.js ·
+            scikit-learn
+
+        </span>
+
+
+    </div>
+
+</footer>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js">
+</script>
+
+
+<script
+    src="{{ url_for('static', filename='js/app.js') }}">
+</script>
+
+
+</body>
+
+</html>

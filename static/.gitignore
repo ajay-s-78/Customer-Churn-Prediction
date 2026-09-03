@@ -1,0 +1,8 @@
+_pycache_/
+customer.db
+database.cpython-314.pyc 
+predict.cpython-314.pyc
+utils.cpython-314.pyc 
+dataset/
+WA_Fn-UseC_-Telco-Customer-Churn.csv
+node_modules/

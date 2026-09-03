@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Analytics — ChurnShield</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="static/css/theme.css" rel="stylesheet" />
+<link href="static/css/theme.css" rel="stylesheet" />
+
+<style>
+    #filterBtn option {
+        background: white;
+        color: #1f2937;
+    }
+
+    #filterBtn {
+        color: white;
+    }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-glass fixed-top">
+  <div class="container">
+   <a class="navbar-brand" href="/">
+      <span class="brand-dot"><i class="bi bi-shield-shaded"></i></span><span>ChurnShield</span>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <i class="bi bi-list fs-2 text-white"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+      <li class="nav-item">
+    <a class="nav-link" href="/">Home</a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="/dashboard">Dashboard</a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="/predict">Prediction</a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="/analytics">Analytics</a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="/about">About</a>
+</li>
+
+<li class="nav-item ms-lg-2">
+    <a class="btn btn-grad" href="/predict">
+        <i class="bi bi-stars me-1"></i> Run Prediction
+    </a>
+</li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main class="page-pad">
+  <div class="container">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 reveal">
+      <div>
+        <span class="badge-glass"><i class="bi bi-pie-chart me-1"></i> Deep Dive</span>
+        <h1 class="text-white mt-2 mb-0">Churn Analytics</h1>
+        <p class="text-white-50 mb-0" style="color:rgba(255,255,255,.7)!important">Explore the drivers and patterns behind customer churn.</p>
+      </div>
+      <div class="d-flex gap-2 mt-3 mt-md-0">
+      <select id="filterBtn" class="btn btn-glass btn-sm">
+    <option value="all">All Customers</option>
+    <option value="0-12">0–12 Months</option>
+    <option value="13-24">13–24 Months</option>
+    <option value="25-36">25–36 Months</option>
+    <option value="37-48">37–48 Months</option>
+    <option value="49-60">49–60 Months</option>
+    <option value="61-72">61–72 Months</option>
+</select>
+       <button id="exportBtn" class="btn btn-glass btn-sm">
+    <i class="bi bi-download me-1"></i>Export
+</button>
+      </div>
+    </div>
+
+    <!-- Stat pills -->
+   <div class="row g-3 g-md-4 mb-4">
+
+    <div class="col-6 col-lg-3">
+        <div class="stat-pill">
+            <div class="l">Avg Tenure</div>
+            <div class="v">
+                {{ analytics.summary.avgTenure }}
+                <small class="text-muted">mo</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 col-lg-3">
+        <div class="stat-pill">
+            <div class="l">Avg Monthly</div>
+            <div class="v">
+                ${{ analytics.summary.avgMonthly }}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 col-lg-3">
+        <div class="stat-pill">
+            <div class="l">Churned</div>
+            <div class="v text-danger">
+                {{ "{:,}".format(analytics.summary.churned) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 col-lg-3">
+        <div class="stat-pill">
+            <div class="l">Retained</div>
+            <div class="v text-success">
+                {{ "{:,}".format(analytics.summary.retained) }}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <!-- Row 1: pie + doughnut -->
+    <div class="row g-3 g-md-4 mb-4">
+      <div class="col-md-6 reveal">
+        <div class="card-premium h-100">
+          <div class="card-body">
+            <h5 class="fw-bold mb-1">Churn by Service Type</h5>
+            <span class="text-muted small">Fiber optic customers churn the most</span>
+            <div class="chart-box mt-3" style="height:280px"><canvas id="servicePie"></canvas></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 reveal">
+        <div class="card-premium h-100">
+          <div class="card-body">
+            <h5 class="fw-bold mb-1">Risk Distribution</h5>
+            <span class="text-muted small">Population split by risk tier</span>
+            <div class="chart-box mt-3" style="height:280px"><canvas id="riskDoughnut"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: bar + line -->
+    <div class="row g-3 g-md-4 mb-4">
+      <div class="col-lg-7 reveal">
+        <div class="card-premium h-100">
+          <div class="card-body">
+            <h5 class="fw-bold mb-1">Monthly Charges vs Churn Rate</h5>
+            <span class="text-muted small">Higher charges correlate with higher churn</span>
+            <div class="chart-box mt-3" style="height:300px"><canvas id="chargesBar"></canvas></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 reveal">
+        <div class="card-premium h-100">
+          <div class="card-body">
+            <h5 class="fw-bold mb-1">Churn Trend (12 mo)</h5>
+            <span class="text-muted small">Seasonality and retention campaigns</span>
+            <div class="chart-box mt-3" style="height:300px"><canvas id="trendLine"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: tenure stacked + contract -->
+    <div class="row g-3 g-md-4 mb-4">
+      <div class="col-md-6 reveal">
+        <div class="card-premium h-100">
+          <div class="card-body">
+            <h5 class="fw-bold mb-1">Tenure Distribution</h5>
+            <span class="text-muted small">Retained vs churned by tenure band</span>
+            <div class="chart-box mt-3" style="height:280px"><canvas id="tenureStack"></canvas></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 reveal">
+        <div class="card-premium h-100">
+          <div class="card-body">
+            <h5 class="fw-bold mb-1">Churn by Contract Type</h5>
+            <span class="text-muted small">Long contracts reduce churn</span>
+            <div class="chart-box mt-3" style="height:280px"><canvas id="contractBar"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature importance -->
+    <div class="row g-3 g-md-4">
+      <div class="col-12 reveal">
+        <div class="card-premium">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div><h5 class="fw-bold mb-0">Top Churn Drivers</h5><span class="text-muted small">Model feature importance (permutation)</span></div>
+              <span class="chip-purple chip"><i class="bi bi-cpu"></i> ML Insight</span>
+            </div>
+            <div class="chart-box" style="height:320px"><canvas id="featureBar"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer-glass py-4">
+  <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+    <span class="small">© 2026 ChurnShield · AI Customer Churn Prediction</span>
+    <span class="small">Built with Bootstrap 5 · Chart.js · scikit-learn</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="static/js/app.js"></script>
+<script id="analytics-data" type="application/json">
+    {{ analytics|tojson }}
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const d = JSON.parse(
+    document.getElementById("analytics-data").textContent
+);
+const filterBtn = document.getElementById("filterBtn");
+
+if (filterBtn) {
+
+    const currentFilter =
+        new URLSearchParams(window.location.search).get("tenure") || "all";
+
+    filterBtn.value = currentFilter;
+
+    filterBtn.addEventListener("change", function () {
+
+        const selectedFilter = this.value;
+
+        const url = new URL(window.location.href);
+
+        if (selectedFilter === "all") {
+            url.searchParams.delete("tenure");
+        } else {
+            url.searchParams.set("tenure", selectedFilter);
+        }
+
+        window.location.href = url.toString();
+    });
+}
+  const baseOpts = {responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom', labels:{boxWidth:12, padding:14}}},
+    scales:{y:{beginAtZero:true,grid:{color:'#f1f5f9'}},x:{grid:{display:false}}}};
+
+  // Service pie
+  new Chart(document.getElementById('servicePie'), {type:'pie',
+   data:{
+    labels:d.service_churn.InternetService.labels,
+    datasets:[{
+        data:d.service_churn.InternetService.churn_rates,
+      backgroundColor:palette.set, borderWidth:2, borderColor:'#fff', hoverOffset:10}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{boxWidth:12,padding:12}}}}});
+
+  // Risk doughnut
+  new Chart(document.getElementById('riskDoughnut'), {type:'doughnut',
+    data:{labels:d.riskDistribution.labels, datasets:[{data:d.riskDistribution.data,
+      backgroundColor:[palette.success,palette.warning,palette.danger], borderWidth:0, hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom'}}}});
+
+  // Charges bar
+  new Chart(document.getElementById('chargesBar'), {type:'bar',
+    data:{
+    labels:d.charges_segmentation.labels,
+
+    datasets:[{
+        label:'Churn %',
+        data:d.charges_segmentation.churn_rates,
+      backgroundColor:chartGradients(document.getElementById('chargesBar').getContext('2d'),palette.purple,'rgba(124,58,237,0.25)'), borderRadius:10, maxBarThickness:48}]},
+    options:{...baseOpts, scales:{y:{...baseOpts.scales.y,ticks:{callback:v=>v+'%'}},x:baseOpts.scales.x}, plugins:{legend:{display:false}}}});
+
+  // Trend line
+  new Chart(document.getElementById('trendLine'), {type:'line',
+    data:{labels:d.churnTrend.labels, datasets:[{label:'Churn %', data:d.churnTrend.churn,
+      borderColor:palette.danger, backgroundColor:'rgba(239,68,68,0.12)', fill:true, tension:.4, borderWidth:2.5, pointRadius:3, pointBackgroundColor:palette.danger}]},
+    options:{...baseOpts, scales:{y:{...baseOpts.scales.y,ticks:{callback:v=>v+'%'}},x:baseOpts.scales.x}, plugins:{legend:{display:false}}}});
+
+  // Tenure stacked
+  new Chart(document.getElementById('tenureStack'), {type:'bar',
+    data:{labels:d.tenure.labels, datasets:[
+      {label:'Retained', data:d.tenure.retained, backgroundColor:palette.success, borderRadius:8, stack:'s'},
+      {label:'Churned',  data:d.tenure.churned,  backgroundColor:palette.danger,  borderRadius:8, stack:'s'}]},
+    options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{position:'bottom'}},
+      scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#f1f5f9'}}}}});
+
+  // Contract
+  new Chart(document.getElementById('contractBar'), {type:'bar',
+    data:{labels:d.churnByContract.labels, datasets:[{label:'Churn %', data:d.churnByContract.data,
+      backgroundColor:[palette.primary,palette.purple,palette.info], borderRadius:10, maxBarThickness:54}]},
+    options:{...baseOpts, scales:{y:{...baseOpts.scales.y,ticks:{callback:v=>v+'%'}},x:baseOpts.scales.x}, plugins:{legend:{display:false}}}});
+
+  // Feature importance (horizontal)
+  new Chart(document.getElementById('featureBar'), {type:'bar',
+    data:{labels:['Contract type','Tenure','Monthly charges','Tech support','Online security','Internet service','Paperless billing','Total charges'],
+      datasets:[{label:'Importance', data:[0.22,0.19,0.16,0.11,0.09,0.08,0.06,0.05],
+        backgroundColor:palette.set, borderRadius:8}]},
+    options:{indexAxis:'y', responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>(c.raw*100).toFixed(1)+'%'}}},
+      scales:{x:{beginAtZero:true,max:0.25,grid:{color:'#f1f5f9'},ticks:{callback:v=>(v*100).toFixed(0)+'%'}},y:{grid:{display:false}}}}});
+});
+// ===============================
+// Analytics Export
+// ===============================
+
+const exportBtn = document.getElementById("exportBtn");
+
+if (exportBtn) {
+    exportBtn.addEventListener("click", function () {
+
+        const data = JSON.parse(
+            document.getElementById("analytics-data").textContent
+        );
+
+        let csv = "Metric,Value\n";
+
+        csv += `Average Tenure,${data.summary.avgTenure} months\n`;
+        csv += `Average Monthly Charges,$${data.summary.avgMonthly}\n`;
+        csv += `Churned Customers,${data.summary.churned}\n`;
+        csv += `Retained Customers,${data.summary.retained}\n`;
+
+        const blob = new Blob([csv], {
+            type: "text/csv;charset=utf-8;"
+        });
+
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "churn_analytics.csv";
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(url);
+    });
+}
+</script>
+</body>
+</html>

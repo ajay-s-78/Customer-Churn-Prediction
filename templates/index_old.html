@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ChurnShield — AI Customer Churn Prediction</title>
+<meta name="description" content="Enterprise AI platform that predicts customer churn before it happens, with risk scoring, confidence gauges, and retention recommendations." />
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+<!-- Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Theme -->
+<link href="static/css/theme.css" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="navbar navbar-expand-lg navbar-glass fixed-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <span class="brand-dot"><i class="bi bi-shield-shaded"></i></span>
+      <span>ChurnShield</span>
+    </a>
+    <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <i class="bi bi-list fs-2 text-white"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="prediction.html">Prediction</a></li>
+        <li class="nav-item"><a class="nav-link" href="analytics.html">Analytics</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item ms-lg-2"><a class="btn btn-grad" href="prediction.html"><i class="bi bi-stars me-1"></i> Run Prediction</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 reveal">
+        <span class="badge-glass"><i class="bi bi-cpu me-1"></i> Machine Learning · 94% Accuracy</span>
+        <h1 class="mt-3 mb-3">Predict churn <span class="text-grad">before it happens</span></h1>
+        <p class="lead text-white-50 fs-5 mb-4" style="color:rgba(255,255,255,0.82)!important">
+          ChurnShield analyzes customer behavior, contract data, and usage signals to flag
+          at-risk accounts early — with confidence scores and AI-driven retention recommendations.
+        </p>
+        <div class="d-flex flex-wrap gap-3">
+          <a href="prediction.html" class="btn btn-grad btn-lg"><i class="bi bi-stars me-2"></i>Run a Prediction</a>
+          <a href="dashboard.html" class="btn btn-glass btn-lg"><i class="bi bi-graph-up-arrow me-2"></i>View Dashboard</a>
+        </div>
+        <div class="d-flex flex-wrap gap-4 mt-4 pt-3" style="color:rgba(255,255,255,0.8)">
+          <div><div class="fw-bold fs-5 text-white">7,043</div><div class="small">Customers scored</div></div>
+          <div><div class="fw-bold fs-5 text-white">26.5%</div><div class="small">Churn detected</div></div>
+          <div><div class="fw-bold fs-5 text-white">$318K</div><div class="small">MRR at risk</div></div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 reveal">
+        <div class="glass p-4 p-md-4 floaty">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="fw-bold">Live Risk Overview</span>
+            <span class="badge-glass"><span class="dot bg-success me-1" style="width:8px;height:8px;border-radius:50%;display:inline-block"></span> Live</span>
+          </div>
+          <div class="row g-3">
+            <div class="col-6">
+              <div class="glass p-3"><div class="small text-white-50">High Risk</div><div class="fs-3 fw-bold">20%</div></div>
+            </div>
+            <div class="col-6">
+              <div class="glass p-3"><div class="small text-white-50">Medium</div><div class="fs-3 fw-bold">22%</div></div>
+            </div>
+            <div class="col-6">
+              <div class="glass p-3"><div class="small text-white-50">Low Risk</div><div class="fs-3 fw-bold">58%</div></div>
+            </div>
+            <div class="col-6">
+              <div class="glass p-3"><div class="small text-white-50">Accuracy</div><div class="fs-3 fw-bold">94%</div></div>
+            </div>
+          </div>
+          <div class="chart-box mt-3" style="height:160px"><canvas id="heroChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ TRUSTED BY ============ -->
+<section class="page-pad pt-5 pb-3">
+  <div class="container">
+    <p class="text-center text-white-50 small text-uppercase fw-bold mb-4" style="color:rgba(255,255,255,.6)">Built for data-driven teams</p>
+    <div class="row row-cols-2 row-cols-md-4 g-3 text-center">
+      <div class="col"><div class="glass py-3"><i class="bi bi-bar-chart-line fs-3"></i><div class="small mt-1">Power BI</div></div></div>
+      <div class="col"><div class="glass py-3"><i class="bi bi-diagram-3 fs-3"></i><div class="small mt-1">Tableau</div></div></div>
+      <div class="col"><div class="glass py-3"><i class="bi bi-cpu fs-3"></i><div class="small mt-1">IBM Watson</div></div></div>
+      <div class="col"><div class="glass py-3"><i class="bi bi-credit-card-2-front fs-3"></i><div class="small mt-1">Stripe-grade</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section class="page-pad pt-5">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span class="badge-glass">Capabilities</span>
+      <h2 class="text-white mt-3">Everything you need to retain customers</h2>
+      <p class="text-white-50 mx-auto" style="max-width:620px;color:rgba(255,255,255,.7)!important">From risk scoring to actionable recommendations, ChurnShield turns raw customer data into retention strategy.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="feature-card">
+          <div class="ic"><i class="bi bi-bullseye"></i></div>
+          <h5 class="fw-bold">Risk Scoring</h5>
+          <p class="text-white-50 mb-0" style="color:rgba(255,255,255,.7)!important">Per-customer churn probability with confidence intervals and model certainty.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="feature-card">
+          <div class="ic"><i class="bi bi-speedometer2"></i></div>
+          <h5 class="fw-bold">Confidence Gauge</h5>
+          <p class="text-white-50 mb-0" style="color:rgba(255,255,255,.7)!important">Animated gauge visualizes prediction confidence at a glance.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="feature-card">
+          <div class="ic"><i class="bi bi-lightbulb"></i></div>
+          <h5 class="fw-bold">Recommendations</h5>
+          <p class="text-white-50 mb-0" style="color:rgba(255,255,255,.7)!important">AI-suggested retention actions tailored to each risk tier.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="feature-card">
+          <div class="ic"><i class="bi bi-pie-chart"></i></div>
+          <h5 class="fw-bold">Analytics Suite</h5>
+          <p class="text-white-50 mb-0" style="color:rgba(255,255,255,.7)!important">Pie, bar, and line charts reveal churn drivers across segments.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="feature-card">
+          <div class="ic"><i class="bi bi-shield-check"></i></div>
+          <h5 class="fw-bold">Risk Badges</h5>
+          <p class="text-white-50 mb-0" style="color:rgba(255,255,255,.7)!important">Color-coded Low / Medium / High badges for instant triage.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="feature-card">
+          <div class="ic"><i class="bi bi-diagram-2"></i></div>
+          <h5 class="fw-bold">ML Pipeline</h5>
+          <p class="text-white-50 mb-0" style="color:rgba(255,255,255,.7)!important">End-to-end workflow from raw data to deployed model predictions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="page-pad">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-5 reveal">
+        <span class="badge-glass">Workflow</span>
+        <h2 class="text-white mt-3 mb-3">From data to decision in four steps</h2>
+        <p class="text-white-50" style="color:rgba(255,255,255,.7)!important">A transparent pipeline you can trust — every prediction is traceable back to the signals that drove it.</p>
+        <a href="prediction.html" class="btn btn-grad mt-3">Try it now <i class="bi bi-arrow-right ms-1"></i></a>
+      </div>
+      <div class="col-lg-7 reveal">
+        <div class="timeline">
+          <div class="timeline-item"><h6 class="text-white fw-bold mb-1">1 · Ingest customer data</h6><p class="text-white-50 small mb-0" style="color:rgba(255,255,255,.65)!important">Demographics, contract, services, tenure, billing.</p></div>
+          <div class="timeline-item"><h6 class="text-white fw-bold mb-1">2 · Feature engineering</h6><p class="text-white-50 small mb-0" style="color:rgba(255,255,255,.65)!important">Encoding, scaling, and signal extraction.</p></div>
+          <div class="timeline-item"><h6 class="text-white fw-bold mb-1">3 · Model inference</h6><p class="text-white-50 small mb-0" style="color:rgba(255,255,255,.65)!important">Trained classifier outputs churn probability.</p></div>
+          <div class="timeline-item"><h6 class="text-white fw-bold mb-1">4 · Retention action</h6><p class="text-white-50 small mb-0" style="color:rgba(255,255,255,.65)!important">Risk tier + recommended next best action.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="page-pad pt-3">
+  <div class="container">
+    <div class="glass p-5 text-center reveal" style="border-radius:var(--radius-lg)">
+      <h2 class="text-white">Ready to stop churn before it starts?</h2>
+      <p class="text-white-50 mx-auto mb-4" style="max-width:560px;color:rgba(255,255,255,.75)!important">Run your first prediction in seconds — no setup required.</p>
+      <a href="prediction.html" class="btn btn-grad btn-lg"><i class="bi bi-stars me-2"></i>Run a Prediction</a>
+      <a href="analytics.html" class="btn btn-glass btn-lg ms-2">Explore Analytics</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer-glass py-4 mt-4">
+  <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+    <span class="small">© 2026 ChurnShield · AI Customer Churn Prediction</span>
+    <span class="small">Built with Bootstrap 5 · Chart.js · scikit-learn</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="static/js/app.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    const ctx = document.getElementById('heroChart').getContext('2d');
+    const d = window.ChurnData.churnTrend;
+    const g = chartGradients(ctx, 'rgba(99,102,241,0.9)', 'rgba(124,58,237,0.1)');
+    new Chart(ctx, {
+      type:'line',
+      data:{ labels:d.labels, datasets:[
+        {label:'Churn %', data:d.churn, borderColor:'#a78bfa', backgroundColor:'rgba(167,139,250,0.15)', fill:true, tension:.4, borderWidth:2, pointRadius:0 },
+        {label:'Retained %', data:d.retained, borderColor:'#34d399', backgroundColor:'rgba(52,211,153,0.10)', fill:true, tension:.4, borderWidth:2, pointRadius:0 }
+      ]},
+      options:{ responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{ x:{display:false}, y:{display:false} } }
+    });
+  });
+</script>
+</body>
+</html>
