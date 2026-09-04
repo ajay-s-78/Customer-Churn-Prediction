@@ -1,3 +1,27 @@
+window.palette = {
+    primary: "#4f46e5",
+    purple: "#7c3aed",
+    success: "#10b981",
+    warning: "#f59e0b",
+    danger: "#ef4444",
+    info: "#0ea5e9",
+    set: [
+        "#4f46e5",
+        "#7c3aed",
+        "#0ea5e9",
+        "#10b981",
+        "#f59e0b",
+        "#ef4444",
+        "#a855f7"
+    ]
+};
+
+window.chartGradients = function(ctx, color1, color2) {
+    const g = ctx.createLinearGradient(0, 0, 0, 260);
+    g.addColorStop(0, color1);
+    g.addColorStop(1, color2);
+    return g;
+};
 /* =========================================================
    ChurnShield — Shared frontend logic
    Flask backend handles real prediction
@@ -347,15 +371,16 @@ document.addEventListener(
 
         if (filterBtn) {
 
-            filterBtn.addEventListener(
-                "click",
-                function() {
+           filterBtn.addEventListener(
+    "click",
+    function(e) {
+        e.preventDefault();
+        return;
 
-                    const currentFilter =
-                        new URLSearchParams(
-                            window.location.search
-                        ).get("tenure") || "all";
-
+        const currentFilter =
+            new URLSearchParams(
+                window.location.search
+            ).get("tenure") || "all";
 
                     const filter =
                         prompt(
